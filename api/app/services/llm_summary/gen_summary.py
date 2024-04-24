@@ -1,7 +1,7 @@
 import json, requests, os
 
-from ...core.enums import HuggingFace_Settings
-from ...core.config import settings
+from ....core.enums import HuggingFace_Settings
+from ....core.config import settings
 
 token = settings.HF_TOKEN_DEV
 # token = os.environ.get("HF_TOKEN")
