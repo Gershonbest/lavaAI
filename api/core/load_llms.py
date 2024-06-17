@@ -5,10 +5,10 @@ from langchain.chains import LLMChain, ConversationChain
 from langchain_groq import ChatGroq
 import os
 
-# from .config import settings
-# api_key = settings.GROQ_API_KEY
+from .config import settings
+api_key = settings.GROQ_API_KEY
 
-api_key = "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"
+# api_key = "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"
 
 groq_chat = ChatGroq(
         groq_api_key=api_key,
