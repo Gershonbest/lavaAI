@@ -4,3 +4,4 @@ uvicorn
 requests
 python-dotenv
 python-multipart
+langchain-groq

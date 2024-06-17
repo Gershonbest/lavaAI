@@ -1,44 +1,46 @@
 from pytube import YouTube
-import os, logging
+import os
 
 from ..audio_to_text.transcription import whisper_transcribe, detect_language
 
 
-def youtube_to_audio(url):
+def load_youtube_audio(url):
+ 
+    path = "./youtube_audio/"
+    yt = YouTube(url)
+    audio = yt.streams.filter(only_audio=True).first()
 
-    try:
-        video = YouTube(url)
-        stream = video.streams.filter(only_audio=True).first()
-        out_file = stream.download(filename=f"{video.title}.mp3")
-        file_stats = os.stat(out_file)
+    audio.download(output_path=path)
+    file_name = audio.default_filename
+    source = path + file_name
 
-        logging.info(f"Downloaded {file_stats.st_size / 1024 / 1024} MB")
-        base, ext = os.path.splitext(out_file)
-        new_file = base+'.mp3'
-        os.rename(out_file, new_file)
-        return new_file
+    if ' ' in file_name:
+        os.rename(source, source.replace(' ', '_'))
+        file_name = source.replace(' ','_')
 
-    except KeyError:
-        print("Unable to fetch video information. Please check the video URL or your network connection.")
-        return None
+    file_without_ext = os.path.splitext(file_name)[0]
+    audio_path = f"{file_without_ext}.mp3"
+    command = f"ffmpeg -i {file_name} {file_without_ext}.mp3"
+
+    os.system(command)
+    os.remove(file_name)
+    return audio_path
+
 
 def youtube_to_text(url):
     try:
-        video = YouTube(url)
-        stream = video.streams.filter(only_audio=True).first()
-        out_file = stream.download(filename=f"{video.title}.mp3")
-        file_stats = os.stat(out_file)
+        audio_path = load_youtube_audio(url)
+        language = detect_language(audio_path)
+        result = whisper_transcribe(audio=audio_path, lang= language)
 
-        logging.info(f"Downloaded {file_stats.st_size / 1024 / 1024} MB")
-        base, ext = os.path.splitext(out_file)
-        new_file = base+'.mp3'
-        os.rename(out_file, new_file)
+        try:
+            os.remove(audio_path)
+            print(f"File '{audio_path}' deleted successfully.")
         
-        language = detect_language(new_file)
-        result = whisper_transcribe(audio=new_file, lang= language)
-
+        except FileNotFoundError:
+            print(f"Error: File '{audio_path}' not found.")
+            
         return result
-
 
     except KeyError:
         print("Unable to fetch video information. Please check the video URL or your network connection.")

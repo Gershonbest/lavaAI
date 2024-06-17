@@ -3,8 +3,9 @@ from fastapi import APIRouter, Form, File, UploadFile
 from ..services.llm_summary.gen_summary import text_summary
 from ...utils.helpers import process_audio
 from ..services.audio_to_text.transcription import whisper_transcribe, whisper_translate, detect_language
-from ...core.payloads import YouTubeDto
+from ...core.payloads import YouTubeDto, QuestionDto
 from ..services.llm_summary.yt_converter import youtube_to_text
+from ..services.llm_rag.askai import response
 
 router = APIRouter()
 
@@ -66,3 +67,12 @@ def transcribe_youtube(youtube:YouTubeDto):
         "transcription": result,
         "summary": summary
         }
+
+
+@router.post("/ask-ai")
+def ask_ai(query: QuestionDto):
+    result = response(query.question)
+    return {
+        "question": query.question,
+        "answer": result.content
+    }

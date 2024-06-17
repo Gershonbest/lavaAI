@@ -2,6 +2,9 @@ from pydantic import BaseModel
 from pydantic_core import Url
 
 
+class QuestionDto(BaseModel):
+    question: str
+
 class YouTubeDto(BaseModel):
     video_url: str
 
