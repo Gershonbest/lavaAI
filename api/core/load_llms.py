@@ -8,8 +8,6 @@ import os
 from .config import settings
 api_key = settings.GROQ_API_KEY
 
-# api_key = "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"
-
 groq_chat = ChatGroq(
         groq_api_key=api_key,
         model_name="mixtral-8x7b-32768"
