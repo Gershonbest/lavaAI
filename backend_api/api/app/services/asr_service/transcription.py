@@ -17,13 +17,13 @@ token = settings.HF_TOKEN_DEV
 torch.cuda.empty_cache()
 device = "cuda" if torch.cuda.is_available() else "cpu"
 torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
-model_id = "openai/whisper-small"
+model_id = "openai/whisper-medium"
 model = AutoModelForSpeechSeq2Seq.from_pretrained(
     model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=False, use_safetensors=True
 )
 
 processor = AutoProcessor.from_pretrained(model_id)
-whisper_model = whisper.load_model('base', device= device)
+whisper_model = whisper.load_model('medium', device= device)
 
 
 def audio_pipeline(language: str, task: str = 'transcribe') -> pipeline:

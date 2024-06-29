@@ -8,6 +8,10 @@ class QuestionDto(BaseModel):
 class YouTubeDto(BaseModel):
     video_url: str
 
+class TextObj(BaseModel):
+    input_text: str
+
+
 
 source_languages = {
     "en": "English",
