@@ -7,7 +7,8 @@ def include_router(app):
 
 
 def start_app():
-    app = FastAPI(title="AI Task")
+    app = FastAPI(title="Lava AI Application", 
+                  description= "API for all kind of AI task for business and Educational purpose")
     include_router(app)
 
     return app
