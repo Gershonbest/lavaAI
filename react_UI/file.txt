@@ -1,3 +1,0 @@
-create your frontend code and environment in this folder
-
-Thank you for your contributions.

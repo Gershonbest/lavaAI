@@ -1,3 +1,0 @@
-create your mobile(andriod) code and environment in this folder
-
-Thank you for your contributions.
