@@ -1,7 +1,7 @@
 import torch
 from typing import Union, Iterable, Tuple, NamedTuple, TypedDict
 from faster_whisper import WhisperModel
-from faster_whisper.transcribe import TranscriptionInfo, Segment
+from faster_whisper.transcribe import TranscriptionInfo, Segment, TranscriptionOptions
 from pyannote.audio import Pipeline
 from schema.data_types import AudioInfo
 
@@ -19,6 +19,7 @@ class WhisperModelHandler:
         self, audio_file: Union[torch.Tensor, bytes, str], **options: Union[dict, None]
     ) -> Tuple[ Iterable[Segment], TranscriptionInfo]:
         """Transcribes the audio file into text segments"""
+        torch.cuda.empty_cache()
         return self.model.transcribe(audio_file, **options)
     
 
@@ -38,4 +39,5 @@ class DiarizationModelHandler:
     ) -> Iterable[Tuple[float, float, str]]:
         
         """Diarizes the audio file into segments"""
+        torch.cuda.empty_cache()
         return self.pipeline(audio_data, num_speakers= self.num_speakers)
