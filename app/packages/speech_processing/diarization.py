@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from app.models.models import DiarizationModelHandler
 from app.schema.data_types import AudioInfo
-from app.utils.audio_utils import process_audio
 from utils.logger import Logger
 
 logger = Logger().get_logger()
@@ -17,12 +16,10 @@ class DiarizationService:
         try:
             # Get the number of speakers from the model
             num_speakers = self.diarization_model.num_speakers
-
             # Generate dynamic speaker mapping
             speaker_mapping = {
                 f"SPEAKER_{str(i).zfill(2)}": f"SPEAKER {i + 1}" for i in range(num_speakers)
             }
-
             # Perform diarization
             diarization_result = self.diarization_model.diarize(self.audio_file)
             seg_info_list = []
